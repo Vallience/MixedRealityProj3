@@ -1,6 +1,6 @@
 
 %% Load Images
-pathSlug = 'JesseApartment/originalSpherePhotographs/';
+pathSlug = 'NickApartment/originalSpherePhotographs/';
 sceneImg = imread(strcat(pathSlug, 'scene.jpg'));
 
 for i=1:7
@@ -16,7 +16,7 @@ rectangle(4) = rectangle(3);
 for i=1:7
     [cropped{i}, rectangle] = imcrop(origImages{i}, rectangle);
     
-    cropPath = strcat('JesseApartment/croppedSphereImages/im', num2str(i), '.jpg');
+    cropPath = strcat('NickApartment/croppedSphereImages/im', num2str(i), '.jpg');
     imwrite(cropped{i}, cropPath);
 end
 
@@ -28,6 +28,4 @@ for i=1:7
 end
 
 %% Setup sparse matrix Z
-
-
 
