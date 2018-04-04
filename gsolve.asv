@@ -12,62 +12,37 @@ n = 256;
 rList = zeros(height*width,1);
 cList = zeros(height*width,1);
 vList = zeros(height*width,1);
-entryIndex = 1;
 %A = zeros(size(Z,1)*size(Z,2)+n+1,n+size(Z,1));
 %b = zeros(size(A,1),1);
 b = zeros(height*width, 1);
-
 %% Include the data-fitting equations
 k = 1;
 for i=1:height
   for j=1:width
       % A(k,Z(i,j)+1) = 1;  A(k,n+i) = -1; PREVIOUS CODE
-      rList(entryIndex) = k; cList(entryIndex) = Z(i,j) + 1; vList(entryIndex) = 1;
-      entryIndex = entryIndex + 1;
-      rList(entryIndex) = k; cList(entryIndex) = n + i;      vList(entryIndex) = -1;
-      entryIndex = entryIndex + 1;
-      
+      rList(k) = k; cList(k) = Z(i,j) + 1; vList(k) = 1;
+      rList(k) = k; cList(k) = n + i;      vList(k) = -1;
       b(k,1) = B(j);
       k=k+1;
   end
 end
 %% Fix the curve by setting its middle value to 0
 % A(k,129) = 1; PREVIOUS CODE
-rList(entryIndex) = k;
-cList(entryIndex) = 129;
-vList(entryIndex) = 1;
-entryIndex = entryIndex + 1;
+rList(k) = k;
+cList(k) = 129;
+vList(k) = 1;
 k=k+1;
 %% Include the smoothness equations
 for i=1:n-2
   % A(k,i)=l;        A(k,i+1)=-2*l;  A(k,i+2)=l; PREVIOUS CODE
-  rList(entryIndex) = k;
-  cList(entryIndex) = i;
-  vList(entryIndex) = 1;
-  entryIndex = entryIndex + 1;
+  rList(k) = k;
+  cList(k) = i;
+  vList(k) = 1;
   
-  rList(entryIndex) = k;
-  cList(entryIndex) = i+1;
-  vList(entryIndex) = -2;
-  entryIndex = entryIndex + 1;
-  
-  rList(entryIndex) = k;
-  cList(entryIndex) = i+2;
-  vList(entryIndex) = 1;
-  entryIndex = entryIndex + 1;
-  
+  rList(
   k=k+1;
 end
-
-rList = rList(1:entryIndex-1,1);
-cList = cList(1:entryIndex-1,1);
-vList = vList(1:entryIndex-1,1);
-
-A = sparse(rList, cList, vList, size(Z,1)*size(Z,2)+n+1,n+size(Z,1));
-
 %% Solve the system using least-squares solve
-size(A)
-size(b)
 x = A\b;
 g = x(1:n);
 lE = x(n+1:size(x,1));
