@@ -6,7 +6,7 @@
 function [g,lE]=gsolve(Z,B,l) 
 n = 256;
 
-[height, width] = size(Z)
+[height, width] = size(Z);
 
 %values for sparse matrix A
 rList = zeros(height*width,1);
@@ -15,7 +15,7 @@ vList = zeros(height*width,1);
 entryIndex = 1;
 %A = zeros(size(Z,1)*size(Z,2)+n+1,n+size(Z,1));
 %b = zeros(size(A,1),1);
-b = zeros(height*width, 1);
+b = zeros(size(Z,1)*size(Z,2)+n+1, 1);
 
 %% Include the data-fitting equations
 k = 1;
@@ -43,17 +43,17 @@ for i=1:n-2
   % A(k,i)=l;        A(k,i+1)=-2*l;  A(k,i+2)=l; PREVIOUS CODE
   rList(entryIndex) = k;
   cList(entryIndex) = i;
-  vList(entryIndex) = 1;
+  vList(entryIndex) = l;
   entryIndex = entryIndex + 1;
   
   rList(entryIndex) = k;
   cList(entryIndex) = i+1;
-  vList(entryIndex) = -2;
+  vList(entryIndex) = -2*l;
   entryIndex = entryIndex + 1;
   
   rList(entryIndex) = k;
   cList(entryIndex) = i+2;
-  vList(entryIndex) = 1;
+  vList(entryIndex) = l;
   entryIndex = entryIndex + 1;
   
   k=k+1;
@@ -64,6 +64,8 @@ cList = cList(1:entryIndex-1,1);
 vList = vList(1:entryIndex-1,1);
 
 A = sparse(rList, cList, vList, size(Z,1)*size(Z,2)+n+1,n+size(Z,1));
+size(A)
+size(b)
 
 %% Solve the system using least-squares solve
 size(A)
