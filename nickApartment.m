@@ -16,7 +16,7 @@ end
 rectangle(4) = rectangle(3);
 
 for i=1:numImgs
-    [cropped{i}, rectangle] = imcrop(origImages{i}, rectangle);
+    cropped{i} = imcrop(origImages{i}, rectangle);
     
     cropPath = strcat('NickApartment/croppedSphereImages/im', num2str(i), '.jpg');
     imwrite(cropped{i}, cropPath);
@@ -42,9 +42,9 @@ for i = 1:numImgs
     im = cropped{i};
     for c = 1:3
         % Get the image for the color channel
-        im_c = reshape(im1(:,:,c), height*width, 1);
-        start = (c-1)*height*width + 1;
-        stop = c*height*width;
+        im_c = reshape(im(:,:,c), height*width, 1);
+        start = (c-1)*height*width + 1
+        stop = c*height*width
         Z(start:stop, i) = im_c;
     end
 end
