@@ -216,4 +216,4 @@ floorplaneStruct.color = floorplaneColor;
 chair.vertices = translate3( chair.vertices, [0, 0, 1] );
 
 plotPlanes( leftplane, 'r-', rightplane, 'g-', ceilplane, 'b-', floorplane, 'c-', backplane, 'y-' );
-patch( 'vertices', chair.vertices, 'faces', chair.faces, 'facecolor', 'flat', 'facevertexcdata', chair.colors );
+patch( 'vertices', chair.vertices, 'faces', chair.faces, 'facecolor', 'flat', 'facevertexcdata', object.colors );
