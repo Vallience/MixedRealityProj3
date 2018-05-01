@@ -196,7 +196,6 @@ PB4 = [Wfb,-Hrb,Dback];
 backplane = [PB1;PB2;PB3;PB4];
 
 %% Make planes right-handed and create floorplaneColor
-
 leftplane(:,2) = -leftplane(:,2);
 rightplane(:,2) = -rightplane(:,2);
 ceilplane(:,2) = -ceilplane(:,2);
@@ -207,13 +206,51 @@ R = roipoly(expandedim, floorx, floory);
 vals = reshape(expandedim,[],3);
 vals = vals(R,:);
 
-floorplaneColor = mean(vals);
+floorplaneColor = [0.54,0.27,0.07];
 
 floorplaneStruct.vertices = floorplane;
 floorplaneStruct.color = floorplaneColor;
 %% Position 3D model
 
-chair.vertices = translate3( chair.vertices, [0, 0, 1] );
+chair.vertices = scale3(chair.vertices, [3,3,3]);
+chair.vertices = rotate3(chair.vertices, 'y', pi/6);
+chair.vertices = translate3( chair.vertices, [-150, -2500, 5000] );
+figure(3);
 
 plotPlanes( leftplane, 'r-', rightplane, 'g-', ceilplane, 'b-', floorplane, 'c-', backplane, 'y-' );
 patch( 'vertices', chair.vertices, 'faces', chair.faces, 'facecolor', 'flat', 'facevertexcdata', chair.colors );
+
+%% Resize image
+
+imageParameters.focalLength = f;
+imageParameters.vanishingPoint = [vx, vy];
+imageParameters.size = [size(expandedim,1), size(expandedim,2)];
+
+expandedim = imresize( expandedim,1/4 ); imageParameters.focalLength = f/4;
+imageParameters.vanishingPoint = [vx/4, vy/4];
+imageParameters.size = [size(expandedim,1), size(expandedim,2)];
+
+
+%% Mex stuff
+[IllumImage, ReflectImage, ObjectMask] = RayTracer( chair, floorplaneStruct, envmap, imageParameters );
+
+alpha = 100;
+IllumImage = IllumImage * alpha;
+
+[IllumImagePlaneOnly, ReflectImagePlaneOnly] = RayTracerPlaneOnly( floorplaneStruct, envmap, imageParameters );
+IllumImagePlaneOnly = IllumImagePlaneOnly * alpha;
+
+RenderWithObject = IllumImage .* ReflectImage;
+RenderWithoutObject = IllumImagePlaneOnly .* ReflectImagePlaneOnly;
+
+imwrite(IllumImage,'IllumImage.png');
+imwrite(ReflectImage,'ReflectImage.png');
+imwrite(IllumImagePlaneOnly,'IllumImagePlaneOnly.png');
+imwrite(ReflectImagePlaneOnly,'ReflectImagePlaneOnly.png');
+imwrite(RenderWithObject,'RenderWithObject.png');
+imwrite(RenderWithoutObject,'RenderWithoutObject.png');
+
+%% Differential rendering
+
+Output = differentialRender(expandedim, RenderWithObject, RenderWithoutObject, ObjectMask);
+imwrite(Output,'Output.png');

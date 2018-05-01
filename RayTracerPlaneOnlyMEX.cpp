@@ -148,11 +148,11 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
     
     
     double* dObjectVertices = mxGetPr( prhs[0] );
-    const int* dimObjectVertices = mxGetDimensions( prhs[0] );
+    const size_t* dimObjectVertices = mxGetDimensions( prhs[0] );
     int nObjectVertices = dimObjectVertices[0];
     
     double* dObjectFaces = ( mxGetPr( prhs[1] ));
-    const int* dimObjectFaces = mxGetDimensions( prhs[1] );
+    const size_t* dimObjectFaces = mxGetDimensions( prhs[1] );
     int nObjectFaces = dimObjectFaces[0];        
     
     int* objectFaces = new int[nObjectFaces*3];
@@ -167,7 +167,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
     double* dPlaneColor = mxGetPr( prhs[1] );
     
     double* dEnvmapVertices = mxGetPr( prhs[2] );
-    const int* dimEnvmapVertices = mxGetDimensions( prhs[2] );
+    const size_t* dimEnvmapVertices = mxGetDimensions( prhs[2] );
     int nEnvmapVertices = dimEnvmapVertices[0];
     
     double* dEnvmapColors = mxGetPr( prhs[3] );

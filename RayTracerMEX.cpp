@@ -205,7 +205,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
     double* dPlaneColor = mxGetPr( prhs[4] );
     
     double* dEnvmapVertices = mxGetPr( prhs[5] );
-    const int* dimEnvmapVertices = mxGetDimensions( prhs[5] );
+    const size_t* dimEnvmapVertices = mxGetDimensions( prhs[5] );
     int nEnvmapVertices = dimEnvmapVertices[0];
     
     double* dEnvmapColors = mxGetPr( prhs[6] );
@@ -264,11 +264,11 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
     
         
     double* dObjectVertices = mxGetPr( prhs[0] );
-    const int* dimObjectVertices = mxGetDimensions( prhs[0] );
+    const size_t* dimObjectVertices = mxGetDimensions( prhs[0] );
     int nObjectVertices = dimObjectVertices[0];
     
     double* dObjectFaces = ( mxGetPr( prhs[1] ));
-    const int* dimObjectFaces = mxGetDimensions( prhs[1] );
+    const size_t* dimObjectFaces = mxGetDimensions( prhs[1] );
     int nObjectFaces = dimObjectFaces[0];        
     
     int* objectFaces = new int[nObjectFaces*3];
@@ -277,7 +277,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
     }
     
     double* dObjectColors = mxGetPr( prhs[2] );
-    const int* dimObjectColors = mxGetDimensions( prhs[2] );
+    const size_t* dimObjectColors = mxGetDimensions( prhs[2] );
     int nObjectColors = dimObjectColors[0];
     
     Vector3* objectVertices = new Vector3[nObjectVertices];
